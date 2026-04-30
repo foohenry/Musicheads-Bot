@@ -8,6 +8,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+cache_content = os.getenv("spotify_cache")
+if cache_content:
+    with open(".cache", "w") as f:
+        f.write(cache_content)
 bot_token = os.getenv("bot_token")
 channel_id = int(os.getenv("channel_id"))
 spotify_client_id = os.getenv("spotify_client_id")
