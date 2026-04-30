@@ -18,7 +18,7 @@ spotify_client_id = os.getenv("spotify_client_id")
 spotify_client_secret = os.getenv("spotify_client_secret")
 spotify_redirect_uri = os.getenv("spotify_redirect_uri")
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=spotify_client_id, client_secret=spotify_client_secret,
-    redirect_uri=spotify_redirect_uri, scope="playlist-modify-public playlist-modify-private", open_browser = False))
+    redirect_uri=spotify_redirect_uri, scope="playlist-modify-public playlist-modify-private", open_browser = False), requests_timeout = 30)
 spotify_check = "https://open.spotify.com/track/"
 last_month = (datetime.now() - timedelta(days = 1)).strftime("Musicheads %B %Y")
 
