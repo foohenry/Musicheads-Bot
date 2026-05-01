@@ -3,14 +3,16 @@ import json
 from discord.ext import commands, tasks
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+from spotipy.cache_handler import CacheFileHandler
 from datetime import datetime, date, timedelta
 import os
 from dotenv import load_dotenv
 load_dotenv()
 
+handler = CacheFileHandler(cache_path="/data/.cache")
 cache_content = os.getenv("spotify_cache")
 if cache_content:
-    with open(".cache", "w") as f:
+    with open("/data/.cache", "w") as f:
         f.write(cache_content)
 bot_token = os.getenv("bot_token")
 channel_id = int(os.getenv("channel_id"))
@@ -18,9 +20,9 @@ spotify_client_id = os.getenv("spotify_client_id")
 spotify_client_secret = os.getenv("spotify_client_secret")
 spotify_redirect_uri = os.getenv("spotify_redirect_uri")
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=spotify_client_id, client_secret=spotify_client_secret,
-    redirect_uri=spotify_redirect_uri, scope="playlist-modify-public playlist-modify-private", open_browser = False), requests_timeout = 30)
+    redirect_uri=spotify_redirect_uri, scope="playlist-modify-public playlist-modify-private", open_browser = False, cache_handler = handler), requests_timeout = 30)
 spotify_check = "https://open.spotify.com/track/"
-last_month = (datetime.now() - timedelta(days = 1)).strftime("Musicheads %B %Y")
+
 
 try:
     with open("/data/submissions_list.json", "r") as f:
@@ -112,6 +114,7 @@ async def makeplaylist(ctx):
 
 @tasks.loop(hours=24)
 async def monthly_reset():
+    last_month = (datetime.now() - timedelta(days = 1)).strftime("Musicheads %B %Y")
     if datetime.now().day == 1:
         if len(submissions_list) == 0:
             channel = bot.get_channel(channel_id)
