@@ -21,7 +21,7 @@ spotify_client_id = os.getenv("spotify_client_id")
 spotify_client_secret = os.getenv("spotify_client_secret")
 spotify_redirect_uri = os.getenv("spotify_redirect_uri")
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=spotify_client_id, client_secret=spotify_client_secret,
-    redirect_uri=spotify_redirect_uri, scope="playlist-modify-public playlist-modify-private", open_browser = False, cache_handler = handler), requests_timeout = 30)
+    redirect_uri=spotify_redirect_uri, scope="playlist-modify-public playlist-modify-private", open_browser=False, cache_handler=handler, requests_timeout=10), requests_timeout=30)
 spotify_check = "https://open.spotify.com/track/"
 
 
