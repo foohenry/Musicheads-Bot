@@ -10,10 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 handler = CacheFileHandler(cache_path="/data/.cache")
-cache_content = os.getenv("spotify_cache")
-if cache_content:
-    with open("/data/.cache", "w") as f:
-        f.write(cache_content)
+
 bot_token = os.getenv("bot_token")
 channel_id = int(os.getenv("channel_id"))
 spotify_client_id = os.getenv("spotify_client_id")
