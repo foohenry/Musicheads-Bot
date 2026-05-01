@@ -9,10 +9,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-handler = CacheFileHandler(cache_path="/data/.cache")
+handler = CacheFileHandler(cache_path=".cache")
 cache_content = os.getenv("spotify_cache")
-if cache_content and not os.path.exists("/data/.cache"):
-    with open("/data/.cache", "w") as f:
+if cache_content and not os.path.exists(".cache"):
+    with open(".cache", "w") as f:
         f.write(cache_content)
 
 bot_token = os.getenv("bot_token")
@@ -26,7 +26,7 @@ spotify_check = "https://open.spotify.com/track/"
 
 
 try:
-    with open("/data/submissions_list.json", "r") as f:
+    with open("submissions_list.json", "r") as f:
         submissions_list = json.load(f)
 except FileNotFoundError:
     submissions_list = []
@@ -60,7 +60,7 @@ async def submit(ctx, url: str):
             submissions_list.append({ "user": ctx.author.name, "user_id": ctx.author.id, "url": url})
             await ctx.send(f"Added <@{ctx.author.id}>'s Submission.")
             
-            with open("/data/submissions_list.json", "w") as f:
+            with open("submissions_list.json", "w") as f:
                 json.dump(submissions_list, f)
     else:
         await ctx.send(f"<@{ctx.author.id}> submission failed. Please submit a Spotify link.")
@@ -71,7 +71,7 @@ async def remove(ctx, url: str):
         if i["user_id"] == ctx.author.id and i["url"] == url:
             submissions_list.remove(i)
             
-            with open("/data/submissions_list.json", "w") as f:
+            with open("submissions_list.json", "w") as f:
                 json.dump(submissions_list, f)
         
             await ctx.send(f"<@{ctx.author.id}>'s Submissions Sucessfully Removed")
@@ -95,7 +95,7 @@ async def submissions(ctx):
 @bot.command()
 @commands.has_any_role("eboard", "leadership", "advisor", "scary")
 async def reset(ctx):
-    with open("/data/submissions_list.json",  "w") as f:
+    with open("submissions_list.json",  "w") as f:
         submissions_list.clear()
         json.dump(submissions_list, f)  
     await ctx.send(f"Submissions successfully reset.")
@@ -130,7 +130,7 @@ async def monthly_reset():
             songs_of_month.append(song)
         sp.playlist_add_items(playlist["id"], songs_of_month)
         
-        with open("/data/submissions_list.json",  "w") as f:
+        with open("submissions_list.json",  "w") as f:
             submissions_list.clear()
             json.dump(submissions_list, f)
     
