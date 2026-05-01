@@ -103,6 +103,7 @@ async def reset(ctx):
 @bot.command()
 @commands.has_any_role("eboard", "leadership", "advisor", "scary")
 async def makeplaylist(ctx):
+    last_month = (datetime.now() - timedelta(days = 1)).strftime("Musicheads %B %Y")
     songs_of_month = []
     playlist = sp.current_user_playlist_create(last_month, public = True, collaborative = False, description ="Musicheads' Favorite Songs of the Month")
     for i in submissions_list:
